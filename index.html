@@ -1,49 +1,248 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Verifikasi 5Gaming</title>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f2f2f2;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-    }
-    .container {
-        background-color: white;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        width: 300px;
-        text-align: center;
-    }
-    .recaptcha {
-        background-color: #f9f9f9;
-        padding: 10px;
-        margin-bottom: 10px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Name Selector</title>
+    <style>
+        body {
+            background-color: #f0f0f0;
+            color: #333;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #555;
+        }
+        .input-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .input-container input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        .input-container button {
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .input-container button:hover {
+            background-color: #555;
+        }
+        #namesList {
+            text-align: left;
+            max-height: 150px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            width: 100%;
+            max-width: 600px;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        #namesList div {
+            padding: 5px;
+            border-bottom: 1px solid #eee;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        #randomNameContainer {
+            margin-top: 20px;
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+        }
+        #randomName {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 36px;
+            margin: 20px 0;
+            padding: 20px;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            background-color: #fff;
+            min-height: 100px;
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .button-container button {
+            margin: 10px;
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .button-container button:hover {
+            background-color: #555;
+        }
+        #trumpetGif {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        #whatsappInput {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+        #whatsappInput input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            width: 200px;
+        }
+        #whatsappInput button {
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #whatsappInput button:hover {
+            background-color: #555;
+        }
+    </style>
 </head>
 <body>
-<div class="container">
-    <h2>Verifikasi untuk fiveGaming</h2>
-    <form action="/submit_form" method="post">
-        <div class="recaptcha">
-            <input type="checkbox" id="iamnotrobot" name="iamnotrobot">
-            <label for="iamnotrobot">I am not a robot</label>
+    <h1>Acak Jodoh</h1>
+    <p>Jika ingin menambahkan nama, klik tambah (+)</p>
+    <div class="input-container">
+        <input type="text" id="nameInput" placeholder="Masukkan nama...">
+        <button onclick="addName()">+</button>
+    </div>
+    <div id="namesList"></div>
+    <div class="button-container">
+        <button onclick="startRandom()">Mulai Acak Nama</button>
+        <button onclick="resetNames()">Reset</button>
+    </div>
+    <div id="randomNameContainer">
+        <div id="randomName" ><p>selamat :</p>
+            <img id="trumpetGif" src="https://images.app.goo.gl/B2ZnJgkHScrnU4Ut9" width="200">
         </div>
-        <input type="submit" value="Submit">
-    </form>
-</div>
+
+    </div>
+    <div class="button-container">
+        <button onclick="sendCompliment()">Kirim Gombalan</button>
+    </div>
+    <div id="whatsappInput">
+        <input type="text" id="phoneNumber" placeholder="Nomor WhatsApp">
+        <button onclick="sendMessage()">Kirim Pesan</button>
+    </div>
+
+    <script>
+        const names = [];
+        let interval;
+        let randomNameElement = document.getElementById('randomName');
+        let trumpetGif = document.getElementById('trumpetGif');
+
+        function addName() {
+            const nameInput = document.getElementById('nameInput');
+            if (nameInput.value.trim() !== '') {
+                names.push(nameInput.value.trim());
+                nameInput.value = '';
+                displayNames();
+            }
+        }
+
+        function displayNames() {
+            const namesList = document.getElementById('namesList');
+            namesList.innerHTML = '';
+            names.forEach(name => {
+                const nameDiv = document.createElement('div');
+                nameDiv.textContent = name;
+                namesList.appendChild(nameDiv);
+            });
+        }
+
+        function startRandom() {
+            if (names.length === 0) {
+                alert('Masukkan setidaknya satu nama.');
+                return;
+            }
+
+            clearInterval(interval);
+            let speed = 50;
+            let iteration = 0;
+            interval = setInterval(() => {
+                randomNameElement.textContent = names[Math.floor(Math.random() * names.length)];
+                iteration++;
+                if (iteration > 20) {
+                    clearInterval(interval);
+                    speed += 100;
+                    interval = setInterval(() => {
+                        randomNameElement.textContent = names[Math.floor(Math.random() * names.length)];
+                        iteration++;
+                        if (iteration > 40) {
+                            clearInterval(interval);
+                            speed += 200;
+                            interval = setInterval(() => {
+                                randomNameElement.textContent = names[Math.floor(Math.random() * names.length)];
+                                iteration++;
+                                if (iteration > 60) {
+                                    clearInterval(interval);
+                                    randomNameElement.style.display = 'block';
+                                    trumpetGif.style.display = 'block';
+                                }
+                            }, speed);
+                        }
+                    }, speed);
+                }
+            }, speed);
+        }
+
+        function resetNames() {
+            names.length = 0;
+            displayNames();
+            randomNameElement.textContent = '';
+            randomNameElement.style.display = 'none';
+            trumpetGif.style.display = 'none';
+        }
+
+        function sendCompliment() {
+            const randomName = randomNameElement.textContent;
+            if (randomName === '') {
+                alert('Mulai acak nama terlebih dahulu.');
+                return;
+            }
+            document.getElementById('whatsappInput').style.display = 'flex';
+        }
+
+        function sendMessage() {
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            const message = `Sudah makan belum sayang, aku kangen🔥❤️❤️❤️💪👍`;
+            const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+    </script>
 </body>
 </html>
