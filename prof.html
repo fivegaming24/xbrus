@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Instagram - sabar__24</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .profile-container {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .profile-img {
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        p {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .btn-follow {
+            background-color: #0095f6;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn-follow:hover {
+            background-color: #007bb5;
+        }
+
+        @media (max-width: 480px) {
+            .profile-container {
+                padding: 15px;
+                width: 90%;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+
+            p {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="profile-container">
+        <img src="https://via.placeholder.com/120" alt="Profile Picture" class="profile-img">
+        <h2>@sabar__24</h2>
+        <p>Bio: Berbagi ilmu dan pengalaman di dunia teknologi.</p>
+        <table>
+            <tr>
+                <th>Pengikut</th>
+                <td>500</td>
+            </tr>
+            <tr>
+                <th>Diikuti</th>
+                <td>300</td>
+            </tr>
+            <tr>
+                <th>Postingan</th>
+                <td>50</td>
+            </tr>
+        </table>
+        <button class="btn-follow">Follow</button>
+    </div>
+</body>
+
+</html>
