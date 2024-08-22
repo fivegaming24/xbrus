@@ -6,7 +6,7 @@
     <title>Random Name Selector</title>
     <style>
         body {
-            background-color: #f0f0f0;
+            background-color: #d5cac0;
             color: #333;
             font-family: 'Arial', sans-serif;
             display: flex;
@@ -16,6 +16,7 @@
             height: 100vh;
             margin: 0;
             padding: 20px;
+            position: relative;
         }
         h1 {
             color: #555;
@@ -131,9 +132,43 @@
         #whatsappInput button:hover {
             background-color: #555;
         }
+
+        /* Custom Shape Divider */
+        .custom-shape-divider-top-1724290053 {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+            line-height: 0;
+        }
+
+        .custom-shape-divider-top-1724290053 svg {
+            position: relative;
+            display: block;
+            width: calc(105% + 1.3px);
+            height: 148px;
+        }
+
+        .custom-shape-divider-top-1724290053 .shape-fill {
+            fill: #bcfba3;
+        }
+
+        /** For mobile devices **/
+        @media (max-width: 767px) {
+            .custom-shape-divider-top-1724290053 svg {
+                width: calc(113% + 1.3px);
+                height: 122px;
+            }
+        }
     </style>
 </head>
 <body>
+    <div class="custom-shape-divider-top-1724290053">
+        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+        </svg>
+    </div>
     <h1>Acak Jodoh</h1>
     <p>Jika ingin menambahkan nama, klik tambah (+)</p>
     <div class="input-container">
@@ -146,10 +181,10 @@
         <button onclick="resetNames()">Reset</button>
     </div>
     <div id="randomNameContainer">
-        <div id="randomName" ><p>selamat :</p>
+        <div id="randomName">
+            <p>selamat :</p>
             <img id="trumpetGif" src="https://images.app.goo.gl/B2ZnJgkHScrnU4Ut9" width="200">
         </div>
-
     </div>
     <div class="button-container">
         <button onclick="sendCompliment()">Kirim Gombalan</button>
@@ -238,10 +273,15 @@
         }
 
         function sendMessage() {
-            const phoneNumber = document.getElementById('phoneNumber').value;
-            const message = `Sudah makan belum sayang, aku kangen🔥❤️❤️❤️💪👍`;
-            const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
-            window.open(whatsappUrl, '_blank');
+            const phoneNumber = document.getElementById('phoneNumber').value.trim();
+            const randomName = randomNameElement.textContent;
+            if (phoneNumber === '') {
+                alert('Masukkan nomor WhatsApp.');
+                return;
+            }
+            const message = `Hai ${randomName}, kamu manis banget!`;
+            const whatsappLink = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
+            window.open(whatsappLink, '_blank');
         }
     </script>
 </body>
